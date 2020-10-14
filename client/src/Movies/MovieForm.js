@@ -7,9 +7,8 @@ import './Movies.css';
 const initialValues = {
     title: '',
     director: '',
-    metascore: '0',
-    stars: [],
-    error: ''
+    metascore: 0,
+    stars: []
 };
 
 const MovieForm = props => {

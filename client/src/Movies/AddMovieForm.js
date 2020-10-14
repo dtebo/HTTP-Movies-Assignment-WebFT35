@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import MovieForm from './MovieForm';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -7,28 +7,30 @@ const initialValues = {
     title: '',
     director: '',
     metascore: '0',
-    error: ''
+    stars: []
 };
 
-const AddMovieForm = props => {
+const AddMovieForm = ({ insertMovie }) => {
     const [formValues, setFormValues] = useState(initialValues);
+
+    const { push } = useHistory();
 
     const handleChanges = e => {
         setFormValues({
             ...formValues,
             [e.target.name]: e.target.value
         });
+        console.log(formValues);
+    };
+
+    const addMovie = () => {
+        insertMovie(formValues);
     };
 
     const handleSubmit = e => {
         e.preventDefault();
 
-        axios
-            .post(`http://localhost:5000/api/movies`. formValues)
-            .then(res => {
-                console.log('AddMovieForm: handleSubmit: DT: ', res);
-            })
-            .catch(err => console.error('AddMovieForm: handleSubmit: Error: DT: ', err));
+        addMovie();
     };
 
     return(

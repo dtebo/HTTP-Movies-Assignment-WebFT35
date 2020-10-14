@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, useParams, useHistory } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import MovieForm from "./Movies/MovieForm";
@@ -11,7 +11,6 @@ const App = () => {
   const [savedList, setSavedList] = useState([]);
   const [movieList, setMovieList] = useState([]);
 
-  const params = useParams();
   const { push } = useHistory();
 
   const getMovieList = () => {
@@ -23,6 +22,19 @@ const App = () => {
 
   const addToSavedList = movie => {
     setSavedList([...savedList, movie]);
+  };
+
+  const insertMovie = m => {
+    axios
+      .post(`http://localhost:5000/api/movies`, m)
+      .then(res => {
+          console.log('AddMovieForm: handleSubmit: DT: ', res);
+
+          setMovieList([...movieList, m]);
+          
+          push('/');
+      })
+      .catch(err => console.error('AddMovieForm: handleSubmit: Error: DT: ', err));
   };
 
   const removeMovie = m => {
@@ -60,7 +72,7 @@ const App = () => {
       <Route
         path="/add-movie"
       >
-        <AddMovieForm />
+        <AddMovieForm insertMovie={insertMovie} />
       </Route>
 
       <Route path="/movies/:id">
