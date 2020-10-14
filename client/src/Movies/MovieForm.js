@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import './Movies.css';
@@ -15,22 +15,37 @@ const initialValues = {
 const MovieForm = props => {
     const [formValues, setFormValues] = useState(initialValues);
     const params = useParams();
+    const { push } = useHistory();
 
     useEffect(() => {
         axios
             .get(`http://localhost:5000/api/movies/${params.id}`)
             .then(res => {
                 console.log('MovieForm: DT: useEffect: ', res);
+
+                setFormValues(res.data);
             })
             .catch(err => console.error('MovieForm: DT: useEffect: Error: ', err));
     }, []);
 
     const handleChanges = e => {
-
+        setFormValues({
+            ...formValues,
+            [e.target.name]: e.target.value
+        });
     };
 
     const handleSubmit = e => {
         e.preventDefault();
+
+        axios
+            .put(`http://localhost:5000/api/movies/${params.id}`, formValues)
+            .then(res => {
+                console.log('movieForm: handleSubmit: DT: ', res);
+
+                push(`/movies/${params.id}`);
+            })
+            .catch(err => console.error('MovieForm: handleSubmit: Error: DT: ', err));
     };
 
     return (
@@ -40,7 +55,7 @@ const MovieForm = props => {
                 onSubmit={handleSubmit}
             >
                 <section className='form-group'>
-                    <label htmlForm='title'>Title</label>
+                    <label htmlFor='title'>Title</label>
                     <label htmlFor='director'>Director</label>
                     <label htmlFor='metascore'>MetaScore</label>
                 </section>
@@ -67,6 +82,7 @@ const MovieForm = props => {
                         onChange={handleChanges}
                     />
                 </section>
+                <button>Update</button>
             </form>
         </>
     );
