@@ -1,0 +1,13 @@
+.movie-form{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 600px;
+}
+
+.movie-form .form-group{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
