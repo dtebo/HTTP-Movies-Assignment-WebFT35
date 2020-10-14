@@ -24,19 +24,6 @@ const App = () => {
     setSavedList([...savedList, movie]);
   };
 
-  const insertMovie = m => {
-    axios
-      .post(`http://localhost:5000/api/movies`, m)
-      .then(res => {
-          console.log('AddMovieForm: handleSubmit: DT: ', res);
-
-          setMovieList([...movieList, m]);
-          
-          push('/');
-      })
-      .catch(err => console.error('AddMovieForm: handleSubmit: Error: DT: ', err));
-  };
-
   const removeMovie = m => {
     axios
       .delete(`http://localhost:5000/api/movies/${m.id}`)
@@ -72,7 +59,7 @@ const App = () => {
       <Route
         path="/add-movie"
       >
-        <AddMovieForm insertMovie={insertMovie} />
+        <AddMovieForm setMovieList={setMovieList} />
       </Route>
 
       <Route path="/movies/:id">

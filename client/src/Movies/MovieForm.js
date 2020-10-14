@@ -30,7 +30,7 @@ const MovieForm = props => {
     const handleChanges = e => {
         setFormValues({
             ...formValues,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.name === 'metascore' ? parseInt(e.target.value) : e.target.value
         });
     };
 

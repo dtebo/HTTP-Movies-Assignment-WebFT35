@@ -6,11 +6,11 @@ import axios from 'axios';
 const initialValues = {
     title: '',
     director: '',
-    metascore: '0',
-    stars: []
+    metascore: 0,
+    stars: ","
 };
 
-const AddMovieForm = ({ insertMovie }) => {
+const AddMovieForm = ({ insertMovie, setMovieList }) => {
     const [formValues, setFormValues] = useState(initialValues);
 
     const { push } = useHistory();
@@ -23,14 +23,23 @@ const AddMovieForm = ({ insertMovie }) => {
         console.log(formValues);
     };
 
-    const addMovie = () => {
-        insertMovie(formValues);
-    };
-
     const handleSubmit = e => {
         e.preventDefault();
+        const newMovie = {
+            ...formValues,
+            stars: formValues.stars.split(","),
+        };
 
-        addMovie();
+        axios
+            .post(`http://localhost:5000/api/movies`, newMovie)
+            .then(res => {
+                console.log('AddMovieForm: handleSubmit: DT: ', res);
+                
+                setMovieList(res.data);
+                
+                push('/');
+            })
+            .catch(err => console.error('AddMovieForm: handleSubmit: Error: DT: ', err));
     };
 
     return(
@@ -60,10 +69,10 @@ const AddMovieForm = ({ insertMovie }) => {
                         onChange={handleChanges}
                     />
                     <input
-                        type='text'
+                        type='number'
                         id='metascore'
                         name='metascore'
-                        value={formValues.metascore}
+                        value={parseInt(formValues.metascore)}
                         onChange={handleChanges}
                     />
                 </section>
