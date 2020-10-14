@@ -3,6 +3,7 @@ import { Route, useParams, useHistory } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import MovieForm from "./Movies/MovieForm";
+import AddMovieForm from "./Movies/AddMovieForm";
 import Movie from "./Movies/Movie";
 import axios from 'axios';
 
@@ -28,9 +29,12 @@ const App = () => {
     axios
       .delete(`http://localhost:5000/api/movies/${m.id}`)
       .then(res => {
-        setMovieList(movieList.filter(movie => {
-          return movie.id !== res;
-        }));
+        // setMovieList([...movieList, movieList.filter(movie => {
+        //   return movie.id !== res.data;
+        // })]);
+        
+        getMovieList();
+        push('/');
       })
       .catch(err => console.error('Movie: deleteMovie: DT: Error: ', err));
   };
@@ -52,6 +56,13 @@ const App = () => {
       >
         <MovieForm />
       </Route>
+
+      <Route
+        path="/add-movie"
+      >
+        <AddMovieForm />
+      </Route>
+
       <Route path="/movies/:id">
         <Movie
           addToSavedList={addToSavedList}

@@ -25,7 +25,6 @@ function Movie({ addToSavedList, removeMovie }) {
 
   const deleteMovie = () => {
     removeMovie(movie);
-    push('/');
   };
 
   useEffect(() => {

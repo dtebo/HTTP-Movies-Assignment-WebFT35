@@ -16,3 +16,17 @@
     align-self: flex-end;
     margin-bottom: 20px;
 }
+
+.add-movie-button{
+    border: none;
+    background-color: rgb(8, 59, 59);
+    cursor: pointer;
+    color: white;
+    width: 150px;
+    height: 30px;
+    margin: 10px;
+}
+
+.add-movie-button:hover{
+    background-color: rgb(33, 107, 107);
+}
